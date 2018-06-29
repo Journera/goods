@@ -83,6 +83,27 @@ func TestIndex(t *testing.T) {
 	}
 }
 
+func TestIter(t *testing.T) {
+	list := New()
+
+	list.AddLast(10)
+	list.AddLast(5)
+
+	ch := list.iter()
+	v, open := <-ch
+	if !open || v != 10 {
+		t.Errorf("Iter should return a channel with 2 values: %d", v)
+	}
+	v, open = <-ch
+	if !open || v != 5 {
+		t.Errorf("Iter should return a channel with 2 values: %d", v)
+	}
+	v, open = <-ch
+	if open {
+		t.Errorf("Iter should close the channel at the end")
+	}
+}
+
 func TestGet(t *testing.T) {
 	list := New()
 
